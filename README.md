@@ -25,7 +25,19 @@ _Siga no TikTok para acompanhar novidades, atualizações e para adquirir a sua 
 
 ## 📲 Como Instalar e Rodar no Termux
 
-Você pode rodar o instalador completo executando o **comando unificado** abaixo no seu Termux:
+Você pode rodar o instalador completo executando o **comando unificado** abaixo no seu Termux:# 1. Atualize os pacotes do seu Termux (Recomendado)
+pkg update && pkg upgrade -y
 
-```bash
-curl -sL "[https://raw.githubusercontent.com/frostzk00SF/OTIMIZADOR-FF-120FPS/main/frostzk00SF](https://raw.githubusercontent.com/frostzk00SF/OTIMIZADOR-FF-120FPS/main/frostzk00SF)" -o frostzk00SF && chmod +x frostzk00SF && ./frostzk00SF
+# 2. Instale o curl caso o seu Termux não tenha
+pkg install curl -y
+
+# 3. Baixe o script direto do repositório oficial
+curl -O [https://raw.githubusercontent.com/frostzk00SF/OTIMIZADOR-FF-120FPS/main/frostzk00SF](https://raw.githubusercontent.com/frostzk00SF/OTIMIZADOR-FF-120FPS/main/frostzk00SF)
+
+# 4. Dê a permissão necessária para execução do módulo
+chmod +x frostzk00SF
+
+# 5. Inicialize o painel do otimizador
+./frostzk00SF
+
+
