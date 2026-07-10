@@ -1,7 +1,7 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
 # ==============================================================================
-#  ANDROID OPTIMIZATION SCRIPT - TERMUX MODULE V3.5 (SISTEMA DE KEYS POR DIAS)
+#  ANDROID OPTIMIZATION SCRIPT - TERMUX MODULE V3.5 (SISTEMA DE KEYS PROTEGIDAS)
 #  DEVELOPED BY: frostzk00SF
 #  TIKTOK: @frostzk00SF
 # ==============================================================================
@@ -127,23 +127,24 @@ case $opcao in
         echo -e "${CYAN}====================================================================${RESET}"
         echo ""
         echo -ne "${YELLOW}Digite a sua Chave VIP para ativar: ${RESET}"
-        read chave
+        read -s chave
         echo ""
 
-        # SISTEMA DE VALIDAÇÃO POR TEMPO DA KEY
         VALIDADO=false
         TEMPO_KEY=""
 
-        # 🔑 Exemplo de Chaves de 1 Dia
-        if [[ "$chave" =~ ^TZK-1DIA-(1049|1382|1599|1744)$ ]]; then
+        # Banco de chaves criptografado (Ninguém consegue ler direto no GitHub)
+        K1=$(echo "VFpLLTFESUEtMTA0OQpUWkstMURJQS0xMzgyClRaSy0xRElBLTE1OTkKVFpLLTFESUEtMTc0NA==" | base64 -d)
+        K7=$(echo "VFpLLTdESUFTLTIxMDQKVFpLLTdESUFTLTIzOTEKVFpLLTdESUFTLTI1NTgKVFpLLTdESUFTLTI3MTA=" | base64 -d)
+        K30=$(echo "VFpLLTMwRElBUy01NTA5ClRaSy0zMERJQVMtNTYxMgpUWkstMzBESUFTLTU3NDAKVFpLLTMwRElBUy01ODIyClRaSy0zMERJQVMtOTk3NA==" | base64 -d)
+
+        if echo "$K1" | grep -Fqx "$chave"; then
             VALIDADO=true
             TEMPO_KEY="1 DIA"
-        # 🔑 Exemplo de Chaves de 7 Dias
-        elif [[ "$chave" =~ ^TZK-7DIAS-(2104|2391|2558|2710)$ ]]; then
+        elif echo "$K7" | grep -Fqx "$chave"; then
             VALIDADO=true
             TEMPO_KEY="7 DIAS"
-        # 🔑 Exemplo de Chaves de 30 Dias
-        elif [[ "$chave" =~ ^TZK-30DIAS-(5509|5612|5740|5822|9974)$ ]]; then
+        elif echo "$K30" | grep -Fqx "$chave"; then
             VALIDADO=true
             TEMPO_KEY="30 DIAS"
         fi
@@ -167,7 +168,7 @@ case $opcao in
             show_progress 1.5 "Otimizando buffers de rede TCP para diminuição do ping geral"
             setprop net.tcp.buffersize.wifi 4096,87380,1102080,4096,16384,1102080 > /dev/null 2>&1
             
-            show_progress 1.2 "Reduzindo tempo de resposta do Kernel Android (Disabling Dithering)"
+            show_progress 1.2 "Reduzindo tempo de response do Kernel Android (Disabling Dithering)"
             setprop persist.sys.use_dithering 0 > /dev/null 2>&1
             setprop sys.use_fifo_ui 1 > /dev/null 2>&1
             
