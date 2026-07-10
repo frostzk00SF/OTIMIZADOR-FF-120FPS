@@ -1,7 +1,7 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
 # ==============================================================================
-#  ANDROID OPTIMIZATION SCRIPT - TERMUX MODULE V4.0 (TRAVA DE DISPOSITIVO + AVISO)
+#  ANDROID OPTIMIZATION SCRIPT - TERMUX MODULE V4.0 (COMPATIBILIDADE AMPLIADA)
 #  DEVELOPED BY: frostzk00SF
 #  TIKTOK: @frostzk00SF
 # ==============================================================================
@@ -18,7 +18,6 @@ BLINK='\033[5m'
 
 clear
 
-# Giant Red Name (ASCII Art para frostzk00SF)
 echo -e "${RED}"
 echo "███████╗██████╗  ██████╗ ███████╗████████╗███████╗██╗  ██╗ ██████╗  ██████╗  ███████╗"
 echo "██╔════╝██╔══██╗██╔═══██╗██╔════╝╚══██╔══╝╚══███╔╝██║ ██╔╝██╔═████╗██╔═████╗██╔════╝"
@@ -40,10 +39,10 @@ if [ "$EUID" -eq 0 ]; then
     IS_ROOT=true
 fi
 
-# Gera um ID único baseado nas propriedades do hardware do celular
-DEVICE_ID=$(getprop ro.serialno 2>/dev/null || getprop ro.boot.serialno 2>/dev/null || echo "$DBUS_SESSION_BUS_ADDRESS" | md5sum | awk '{print $1}')
+# Fallback de ID para Termux antigo da Play Store sem getprop liberado
+DEVICE_ID=$(getprop ro.serialno 2>/dev/null || getprop ro.boot.serialno 2>/dev/null || echo "$DATA_ONLY" | md5sum | awk '{print $1}')
 if [ -z "$DEVICE_ID" ] || [ "$DEVICE_ID" = "d41d8cd98f00b204e9800998ecf8427e" ]; then
-    DEVICE_ID=$(uname -a | md5sum | awk '{print $1}')
+    DEVICE_ID=$(uname -m | md5sum | awk '{print $1}')
 fi
 
 DB_DIR="$HOME/.tzk_security"
@@ -118,7 +117,7 @@ case $opcao in
         VALIDADO=false
         TEMPO_KEY=""
 
-        # Banco expandido de chaves criptografado (Contém as antigas + 15 novas)
+        # Banco de chaves em Base64 estável para interpretadores antigos
         K1=$(echo "VFpLLTFESUEtMTA0OQpUWkstMURJQS0xMzgyClRaSy0xRElBLTE1OTkKVFpLLTFESUEtMTc0NApUWkstMURJQS0zMzgxClRaSy0xRElBLTQ0MTIKVFpLLTFESUEtNzI5MQpUWkstMURJQS05MDU0ClRaSy0xRElBLTY2MDM=" | base64 -d)
         K7=$(echo "VFpLLTdESUFTLTIxMDQKVFpLLTdESUFTLTIzOTEKVFpLLTdESUFTLTI1NTgKVFpLLTdESUFTLTI3MTAKVFpLLTdESUFTLTg4MTEKVFpLLTdESUFTLTQ0OTAKVFpLLTdESUFTLTMwMjIKVFpLLTdESUFTLTcxNjgKVFpLLTdESUFTLTk0Mzc=" | base64 -d)
         K30=$(echo "VFpLLTMwRElBUy01NTA5ClRaSy0zMERJQVMtNTYxMgpUWkstMzBESUFTLTU3NDAKVFpLLTMwRElBUy01ODIyClRaSy0zMERJQVMtOTk3NApUWkstMzBESUFTLTQ0MTUKVFpLLTMwRElBUy03NzgyClRaSy0zMERJQVMtODIwMQpUWkstMzBESUFTLTExOTAKVFpLLTMwRElBUy02NTEz" | base64 -d)
@@ -132,11 +131,10 @@ case $opcao in
         fi
 
         if [ "$VALIDADO" = true ]; then
-            # --- SISTEMA DE SISTEMA ANTI-ROUBO / DISPOSITIVO ÚNICO ---
+            # Sistema Anti-Roubo adaptado com suporte a grep simples
             KEY_MD5=$(echo -n "$chave" | md5sum | awk '{print $1}')
             LOCAL_REG_FILE="$DB_DIR/reg_$KEY_MD5"
 
-            # Simula validação em nuvem local vinculando a Key ao ID do Hardware
             if [ -f "$LOCAL_REG_FILE" ]; then
                 SAVED_ID=$(cat "$LOCAL_REG_FILE")
                 if [ "$SAVED_ID" != "$DEVICE_ID" ]; then
